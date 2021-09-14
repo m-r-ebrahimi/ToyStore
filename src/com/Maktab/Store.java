@@ -1,8 +1,10 @@
 package com.Maktab;
 
+import java.util.Arrays;
+
 public class Store {
     private Customer[] customer;
-    private static Car[] cars=new Car[1];
+    private static Car[] cars=new Car[0];
 
     private int lastIndex = 0;
 
@@ -15,7 +17,8 @@ public class Store {
     }
 
     public void addCar(int id, int amount, double basePrice, ToySize size) {
-        cars[lastIndex] = new Car(id, amount, basePrice, size);
+        resize();
+        cars[lastIndex++] = new Car(id, amount, basePrice, size);
     }
     public void addDiscount(int id,int discount){
         for (int i = 0; i < cars.length; i++) {
@@ -23,5 +26,7 @@ public class Store {
                 cars[i].addDiscount(discount);
         }
     }
-    
+    public void resize(){
+        cars= Arrays.copyOf(cars, cars.length+1);
+    }
 }

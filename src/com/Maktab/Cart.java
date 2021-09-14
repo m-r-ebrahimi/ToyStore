@@ -1,13 +1,44 @@
 package com.Maktab;
 
-public class Cart {
-    private int lastIndex = 0;
-    private double[][] factor = new double[1][3];
+import java.util.ArrayList;
 
-    public Cart(int id, int amount) {
-        factor[lastIndex][0] = id;
-        factor[lastIndex][1] = getPrice(id);
-        factor[lastIndex][2] = amount;
+public class Cart {
+    private Object[] customerFactor = new Object[3];
+    private ArrayList<Object> factor = new ArrayList<>();
+
+    public void addItem(int id, int amount) {
+        for (int i = 0; i < factor.size(); i++) {
+            customerFactor = (Object[]) factor.get(i);
+            if (customerFactor[0].equals(id)) {
+                customerFactor[2] = Integer.parseInt(customerFactor[2].toString()) + amount;
+            } else {
+                customerFactor[0] = id;
+                customerFactor[1] = getPrice(id);
+                customerFactor[2] = amount;
+                factor.add(customerFactor);
+            }
+        }
+    }
+
+    public void removeItem(int id, int amount) {
+        for (int i = 0; i < factor.size(); i++) {
+            customerFactor = (Object[]) factor.get(i);
+            if (customerFactor[0].equals(id)) {
+                if (amount < Integer.parseInt(customerFactor[2].toString()))
+                    customerFactor[2] = Integer.parseInt(customerFactor[2].toString()) - amount;
+                else
+                    factor.remove(i);
+            }
+        }
+    }
+
+    public void removeItem(int id) {
+        for (int i = 0; i < factor.size(); i++) {
+            customerFactor = (Object[]) factor.get(i);
+            if (customerFactor[0].equals(id)) {
+                factor.remove(i);
+            }
+        }
     }
 
     public double getPrice(int id) {
@@ -19,7 +50,7 @@ public class Cart {
         return price;
     }
 
-    public double[][] getFactor() {
+    public ArrayList<Object> getFactor() {
         return factor;
     }
 }

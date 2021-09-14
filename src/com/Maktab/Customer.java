@@ -4,12 +4,12 @@ public class Customer {
     private String name;
     private int id;
     private Budget budget;
-    private Cart cart;
+    private Cart cart = new Cart();
 
     public Customer(String name, int id, double budget) {
         this.name = name;
         this.id = id;
-        this.budget =new Budget(budget);
+        this.budget = new Budget(budget);
     }
 
     public String getName() {
@@ -24,7 +24,7 @@ public class Customer {
         return budget;
     }
 
-    public void addToCart(int id){
-
+    public void addToCart(int id, int amount) {
+        cart.addItem(id, amount);
     }
 }
