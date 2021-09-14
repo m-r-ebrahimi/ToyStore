@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Cart {
     private Object[] customerFactor = new Object[3];
-    private ArrayList<Object> factor = new ArrayList<>();
+    private ArrayList factor = new ArrayList<>();
 
     public void addItem(int id, int amount) {
         for (int i = 0; i < factor.size(); i++) {
@@ -24,9 +24,10 @@ public class Cart {
         for (int i = 0; i < factor.size(); i++) {
             customerFactor = (Object[]) factor.get(i);
             if (customerFactor[0].equals(id)) {
-                if (amount < Integer.parseInt(customerFactor[2].toString()))
+                if (amount < Integer.parseInt(customerFactor[2].toString())) {
                     customerFactor[2] = Integer.parseInt(customerFactor[2].toString()) - amount;
-                else
+                    factor.add(i, customerFactor);
+                } else
                     factor.remove(i);
             }
         }
@@ -43,9 +44,19 @@ public class Cart {
 
     public double getPrice(int id) {
         double price = -1;
-        for (int i = 0; i < Store.getCars().length; i++) {
-            if (Store.getCars()[i].getId() == id)
-                price = Store.getCars()[i].getPrice();
+        for (int i = 0; i < Store.getCars().size(); i++) {
+            customerFactor = (Object[]) factor.get(i);
+            if (customerFactor[0].equals(id))
+                price = (double) customerFactor[1];
+        }
+        return price;
+    }
+
+    public double getTotalPrice() {
+        double price = 0;
+        for (int i = 0; i < factor.size(); i++) {
+            customerFactor = (Object[]) factor.get(i);
+            price += (double) customerFactor[1] * (double) customerFactor[2];
         }
         return price;
     }

@@ -27,4 +27,22 @@ public class Customer {
     public void addToCart(int id, int amount) {
         cart.addItem(id, amount);
     }
+
+    public void removeOfCart(int id, int amount) {
+        cart.removeItem(id, amount);
+    }
+
+    public void removeOfCart(int id) {
+        cart.removeItem(id);
+    }
+
+    public void buy() {
+        if (budget.decreaseBalance(cart.getTotalPrice())) {
+            Store.update(cart);
+            cart = new Cart();
+        } else {
+            System.out.println("Your purchase was unsuccessful");
+            return;
+        }
+    }
 }

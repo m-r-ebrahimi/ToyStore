@@ -1,32 +1,54 @@
 package com.Maktab;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Store {
-    private Customer[] customer;
-    private static Car[] cars=new Car[0];
+    private static Car car;
+    private Customer customer;
+    private static ArrayList<Car> cars = new ArrayList<>();
 
-    private int lastIndex = 0;
-
-    public Customer[] getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public static Car[] getCars() {
+    public static ArrayList<Car> getCars() {
         return cars;
     }
 
     public void addCar(int id, int amount, double basePrice, ToySize size) {
-        resize();
-        cars[lastIndex++] = new Car(id, amount, basePrice, size);
+        car = new Car(id, amount, basePrice, size);
+        cars.add(car);
     }
-    public void addDiscount(int id,int discount){
-        for (int i = 0; i < cars.length; i++) {
-            if(cars[i].getId()==id)
-                cars[i].addDiscount(discount);
+
+    public void addDiscount(int id, int discount) {
+        for (int i = 0; i < cars.size(); i++) {
+            car = (Car) cars.get(i);
+            if (car.getId() == id) {
+                car.addDiscount(discount);
+                cars.add(i, car);
+            }
         }
     }
-    public void resize(){
-        cars= Arrays.copyOf(cars, cars.length+1);
+
+    public static void update(Cart cart){
+        ArrayList tempCart=cart.getFactor();
+        Object[] item=new Object[3];
+        for (int i = 0; i < tempCart.size(); i++) {
+            item=(Object[])tempCart.get(i);
+            removeCar((int)item[0],(int)item[2]);
+        }
+    }
+
+    public static void removeCar(int id,int amount){
+        for (int i = 0; i < cars.size(); i++) {
+            car = (Car) cars.get(i);
+            if (car.getId() == id) {
+                if (amount < car.getCount()) {
+                    car.setCount(car.getCount() - amount);
+                    cars.add(i, car);
+                } else
+                    cars.remove(i);
+            }
+        }
     }
 }
